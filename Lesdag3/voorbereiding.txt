@@ -1,0 +1,159 @@
+##########
+testlandschap 3
+##########
+
+vragen over de vorige lessen?
+filmpje bekijken en slides overlopen
+
+##########
+Entity framework
+##########
+
+begin met databank aan te maken
+	tools sql server new query / mssqllocaldb
+	create database demo;
+	controleer in sql server object browser of ze bestaat
+
+selecteer tables add table
+maak tabel met een aantal kolommen aan bvb student: id, naam, score
+	
+	CREATE TABLE [dbo].[Student]
+(
+	[Id] INT NOT NULL PRIMARY KEY,
+	[Name] VARCHAR(255) NOT NULL,
+	[Score] INT
+)
+
+doe een paar voorbeelden voor select, insert, 
+
+insert into Student values (1, 'Lisa', 15)
+insert into Student values (2, 'Kenny', 16)
+insert into Student values (3, 'Marge', 12)
+insert into Student values (4, 'Bart', 9)
+
+select * from Student where Score>10 order by Score desc
+	haal er ook eens enkel de namen uit
+
+update Student set Score = 11 where Name='Bart'
+	conditie is zeer belangrijk, anders alle scores op 11
+
+delete from Student where Name='Marge'
+	ook hier is de conditie belangrijk, anders alles weg
+
+Opdracht:
+maak een tabel aan met naam Messages waar een reeks tweets worden bijgehouden.
+Elke tweet heeft een id, naam van afzender, bericht en aantal likes
+
+voeg minstens 5 tweets toe, sorteer ze volgens hun likes (meeste likes eerst),
+verhoog het aantal likes van 1 tweet eens en toon ze opnieuw.
+Om te eindigen, verwijder alle data
+
+###### Terug naar slides tot hier overlopen
+
+Nu hebben we een datatabel gemaakt. Om deze aan te roepen vanuit c# zijn er twee mogelijkheden.
+
+Add entity framework/Microsoft SqlClient
+
+ADO.net -> direct aanroepen van de databank door middel van queries zoals hiervoor
+
+functie met name als argument:
+SqlConnection conn = new SqlConnection("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=demo;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+SqlCommand cmd = new SqlCommand($"select * from student where name ='{name}'", conn);
+            
+conn.Open();
+SqlDataReader reader = cmd.ExecuteReader();
+while (reader.Read())
+{
+    Console.WriteLine(reader[1]);
+}
+reader.Close();
+
+risk for Sql injection?
+maar ook veel repititief en overbodig werk
+
+Entity framework
+	- maak sql tabellen en relaties op basis van code (of omgekeerd)
+	- geen sql injection mogelijk zonder extra werk
+	- veel herhaaldelijk werk niet nodig
+
+code first from database via slides
+
+echter voor dit project en in echte situaties kun je starten met het datamodel op te bouwen in code en dan de database te genereren op basis van dit model.
+Zo moet je het maar 1 keer doen ipv 2 keer.
+
+Without database:
+project met iets van .netFramework + nuget packages
+EntityFramework
+EntityFrameworkcore
+EntityFrameworkcore.sqlserver
+EntityFrameworkcore.tools
+
+voeg ado.net first model thing toe
+db context is automatisch gemaakt, bespreek wat er allemaal toegevoegd is en wat er staat.
+Spreek het gedeelte in de app.config
+
+voeg type User toe met firstname, lastname, id met get en set
+ public string FirstName { get; set; }
+ type Car met Id, Make, Model
+ 
+jullie hebben reeds een vak gehad over databanken waar je hebt gezien dat een tabel een aantal constrains kan hebben zoals primary or foreign key, not null etc
+voeg zo een paar zaken toe
+
+using System.ComponentModel.DataAnnotations;
+[Key]
+[Column("voornaam")]
+[MaxLength(500)]
+[Required]
+[NotMapped]
+
+Moeilijkere zaken door de fluent api via 
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+		
+bvb: 
+primary key is firstname lastname
+modelBuilder.Entity<User>.HasKey(user => new { user.FirstName, user.LastName}
+
+relaties, bvb veel op veel relaties
+ modelBuilder.Entity<User>()
+                .HasMany<Car>(user => user.Cars)
+                .WithMany(car => car.Users);
+voeg ook Lists toe aan user en car
+			
+tabel constraints example			
+ modelBuilder.Entity<Car>().Property(car => car.Model)
+                .HasMaxLength(50)
+                .IsOptional()
+                .HasColumnName("reeks");
+voeg optional toe
+
+je kan het gebruiken via
+UserContext userContext = new UserContext();
+User[] users = userContext.users.toArray();
+new User();
+dbcontext.users.add(user);
+.remove()
+dbContext.saveChanges();
+	- alle required velden moeten een waarde hebben.
+
+oppassen met velden die behouren bij andere dbContexten. Kunnen toch geupdate worden door ze als Modified te zetten.
+
+De overvloed van dbcontext is beter weg te steken in een extra repository classe met de crud operaties.
+
+hier nog opmerken dat foreign keys niet automatisch ingevuld worden. gebruik hiervoor include bij de get
+	getAllCars()
+	return context.cars.include(x => x.User).ToList()
+
+wat bij wijzigingen van de dbcontext?
+Migraties gebeuren niet automatisch. Je kan dit doen door via de package manager console het commando 
+	enable-migrations
+uit te voeren. Dan kan je 
+	add-migration 
+en om aan te geven dat er een migratie is en
+	update-database 
+om ze uit te voeren. Dit werkt uitstekend bij lokale databases maar is complexer bij remote databanken.
+
+
+
+
+
