@@ -1,0 +1,31 @@
+﻿<Window x:Class="WpfApp1.Paypal"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp1"
+        mc:Ignorable="d"
+        Title="Paypal" Height="600" Width="600">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Image Grid.ColumnSpan="2" Source="Images/Paypal-SafeShops.be-Business-Partner-logo.png" />
+        <Label Content="E-mail:" Margin="5" Grid.Row="1"/>
+        <TextBox x:Name="emailTextbox" Margin="5" Grid.Row="1" Grid.Column="1"/>
+        <Label Content="Password" Margin="5" Grid.Row="2"/>
+        <PasswordBox x:Name="passwordBox" Margin="5" Grid.Row="2" Grid.Column="1"/>
+
+        <Button x:Name="payButton" Content="Pay" Grid.Column="1" Grid.Row="3" Margin="5" Click="payButton_Click"/>
+        <Button x:Name="cancelButton"  Content="Cancel" Grid.Column="0" Grid.Row="3" Margin="5" Click="cancelButton_Click"/>
+
+    </Grid>
+</Window>
