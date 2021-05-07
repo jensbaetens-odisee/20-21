@@ -1,0 +1,36 @@
+﻿<Window x:Class="Quotes.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Quotes"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <ListBox x:Name="quotesListBox" Margin="5" SelectionChanged="quotesListBox_SelectionChanged"/>
+        <Grid Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+
+            </Grid.RowDefinitions>
+            <Label Margin="5">Auteur:</Label>
+            <TextBox x:Name="authorTextBox" Grid.Column="1" Margin="5"/>
+
+            <Label Grid.Row="1" Margin="5">Quote:</Label>
+            <TextBox x:Name="quoteTextBox" Grid.Column="1" Grid.Row="1" Margin="5"/>
+
+            <Button Grid.Row="2" Grid.ColumnSpan="2" Name="saveButton" Margin="5" Padding="5" Click="saveButton_Click">Save</Button>
+        </Grid>
+    </Grid>
+</Window>
