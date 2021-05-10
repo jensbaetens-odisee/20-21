@@ -17,7 +17,7 @@ namespace WpfApp1
     /// <summary>
     /// Interaction logic for Paypal.xaml
     /// </summary>
-    public partial class Paypal : Window
+    public partial class Paypal : Window, IPayable
     {
         private bool _paypalPaymentSucceeded = false;
         public Paypal()
@@ -25,12 +25,24 @@ namespace WpfApp1
             InitializeComponent();
         }
 
-        public void OpenPaypalScreen()
+        //interface IPayable
+        public void OpenPaymentScreen()
         {
             ShowDialog();
         }
 
-        public bool PaypalPaymentSucceeded { get => _paypalPaymentSucceeded; }
+        public bool PaymentSucceeded => _paypalPaymentSucceeded;
+
+        public string PaymentSucceededMessage
+        {
+            get => "Payment with paypal succeeded";
+        }
+
+        public string PaymentFailedMessage
+        {
+            get => "Payment with paypal failed";
+        }
+        // end interface IPayable
 
         private void payButton_Click(object sender, RoutedEventArgs e)
         {

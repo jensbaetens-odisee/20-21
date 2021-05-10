@@ -58,6 +58,7 @@
     <Compile Include="Bancontact.xaml.cs">
       <DependentUpon>Bancontact.xaml</DependentUpon>
     </Compile>
+    <Compile Include="IPayable.cs" />
     <Compile Include="Paypal.xaml.cs">
       <DependentUpon>Paypal.xaml</DependentUpon>
     </Compile>

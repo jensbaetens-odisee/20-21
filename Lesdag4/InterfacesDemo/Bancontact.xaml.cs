@@ -17,7 +17,7 @@ namespace WpfApp1
     /// <summary>
     /// Interaction logic for Bancontact.xaml
     /// </summary>
-    public partial class Bancontact : Window
+    public partial class Bancontact : Window, IPayable
     {
         private bool _bancontactPaymentSucceeded = false;
         public Bancontact()
@@ -25,13 +25,24 @@ namespace WpfApp1
             InitializeComponent();
         }
 
-        public void OpenBancontactScreen()
+        //interface IPayable
+        public void OpenPaymentScreen()
         {
             ShowDialog();
         }
 
-        public bool BancontactPaymentSucceeded { get => _bancontactPaymentSucceeded; }
+        public bool PaymentSucceeded => _bancontactPaymentSucceeded;
 
+        public string PaymentSucceededMessage
+        {
+            get => "Payment with banccontact succeeded";
+        }
+
+        public string PaymentFailedMessage
+        {
+            get => "Payment with banccontact failed";
+        }
+        // end interface IPayable
 
         private void payButton_Click(object sender, RoutedEventArgs e)
         {

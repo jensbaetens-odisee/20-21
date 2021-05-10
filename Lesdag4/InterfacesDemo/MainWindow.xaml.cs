@@ -60,6 +60,35 @@ namespace WpfApp1
             // Implementeer deze knop zodanig dat het juiste scherm getoond wordt.
             // open het correcte scherm (paypol, bancontact of visa)
             // Toon in message box of het gelukt is.
+
+            IPayable payWindow = null;
+            List<IPayable> windows = new List<IPayable>();
+            windows.Add(new Visa());
+            windows.Add(new Paypal());
+            windows.Add(new Bancontact());
+
+            if (visaRadioButton.IsChecked == true)
+            {
+                payWindow = new Visa();
+            } else if(paypalRadioButton.IsChecked == true)
+            {
+                payWindow = new Paypal();
+            } else if(bancontactRadioButton.IsChecked == true)
+            {
+                payWindow = new Bancontact();
+            }
+
+            if(payWindow != null) { 
+                payWindow.OpenPaymentScreen();
+                if (payWindow.PaymentSucceeded)
+                {
+                    MessageBox.Show(payWindow.PaymentSucceededMessage);
+                }
+                else
+                {
+                    MessageBox.Show(payWindow.PaymentFailedMessage);
+                }
+            }
         }
     }
 }

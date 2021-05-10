@@ -17,7 +17,7 @@ namespace WpfApp1
     /// <summary>
     /// Interaction logic for Visa.xaml
     /// </summary>
-    public partial class Visa : Window
+    public partial class Visa : Window, IPayable
     {
         private bool _visaPaymentSucceeded = false;
         public Visa()
@@ -25,12 +25,22 @@ namespace WpfApp1
             InitializeComponent();
         }
 
-        public void OpenVisaScreen()
+        //interface IPayable
+        public void OpenPaymentScreen()
         {
             ShowDialog();
         }
 
-        public bool VisaPaymentSucceeded { get => _visaPaymentSucceeded; }
+        public bool PaymentSucceeded => _visaPaymentSucceeded;
+
+        public string PaymentSucceededMessage {
+            get => "Payment with visa succeeded";
+        }
+
+        public string PaymentFailedMessage {
+            get => "Payment with visa failed";
+        }
+        // end interface IPayable
 
         private void payButton_Click(object sender, RoutedEventArgs e)
         {
