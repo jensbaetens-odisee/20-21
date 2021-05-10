@@ -58,6 +58,8 @@ namespace WpfApp1
         private void payButton_Click(object sender, RoutedEventArgs e)
         {
             // Implementeer deze knop zodanig dat het juiste scherm getoond wordt.
+            // open het correcte scherm (paypol, bancontact of visa)
+            // Toon in message box of het gelukt is.
         }
     }
 }
