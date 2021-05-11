@@ -69,7 +69,6 @@
   <ItemGroup>
     <Compile Include="GradeRepositoryTests.cs" />
     <Compile Include="GradesHelperTests.cs" />
-    <Compile Include="NSubstituteUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

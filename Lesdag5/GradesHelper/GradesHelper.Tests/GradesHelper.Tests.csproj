@@ -48,6 +48,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GradeRepositoryFake.cs" />
+    <Compile Include="GradeRepositoryMock.cs" />
+    <Compile Include="GradeRepositorySpy.cs" />
+    <Compile Include="GradeRepositoryStub.cs" />
     <Compile Include="GradesHelperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

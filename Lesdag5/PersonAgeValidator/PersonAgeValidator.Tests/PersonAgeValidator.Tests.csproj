@@ -48,8 +48,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AgeValidatorStub.cs" />
     <Compile Include="AgeValidatorTests.cs" />
     <Compile Include="PersonTests.cs" />
+    <Compile Include="PersonTestsWithNSubstitute.cs" />
+    <Compile Include="PersonTestsWithStub.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
