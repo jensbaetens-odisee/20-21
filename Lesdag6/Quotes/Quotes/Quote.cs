@@ -22,5 +22,10 @@ namespace Quotes
         {
 
         }
+
+       /* public override string ToString()
+        {
+            return Text;
+        }*/
     }
 }

@@ -11,6 +11,7 @@ using System.Windows.Controls;
 namespace Quotes.Tests
 {
     [TestFixture]
+    [RequiresThread(ApartmentState.STA)]
     public class MainWindowTests
     {
      

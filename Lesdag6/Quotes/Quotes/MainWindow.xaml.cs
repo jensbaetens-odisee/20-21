@@ -8,7 +8,7 @@ namespace Quotes
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, ICloseable
     {
         IQuoteRepository quoteRepository;
         public MainWindow() : this(new QuoteRepository())
@@ -24,7 +24,8 @@ namespace Quotes
             // LoadQuotes();
 
             //Stap 1 + zorg voor link listbox en textveldjes gaan zorgen met de datacontext
-            DataContext = new QuoteViewModel();
+            //Commented out when working with coordinator
+            //DataContext = new QuoteViewModel();
         }
 
         /*private void saveButton_Click(object sender, RoutedEventArgs e)

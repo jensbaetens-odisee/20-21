@@ -65,6 +65,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AddQuoteViewModel.cs" />
+    <Compile Include="AddQuoteWindow.xaml.cs">
+      <DependentUpon>AddQuoteWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Coordinator.cs" />
+    <Compile Include="ICloseable.cs" />
+    <Compile Include="ICoordinator.cs" />
     <Compile Include="Migrations\202104211112053_Initial.cs" />
     <Compile Include="Migrations\202104211112053_Initial.designer.cs">
       <DependentUpon>202104211112053_Initial.cs</DependentUpon>
@@ -73,6 +80,12 @@
     <Compile Include="Quote.cs" />
     <Compile Include="QuoteDbContext.cs" />
     <Compile Include="QuoteRepository.cs" />
+    <Compile Include="QuoteViewModel.cs" />
+    <Compile Include="RelayCommand.cs" />
+    <Page Include="AddQuoteWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
