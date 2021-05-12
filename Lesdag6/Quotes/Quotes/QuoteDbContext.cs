@@ -12,7 +12,7 @@ namespace Quotes
     {
         public QuoteDbContext():base("quotes")
         {
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<QuoteDbContext, Configuration>());
+            //Database.SetInitializer(new MigrateDatabaseToLatestVersion<QuoteDbContext, Configuration>());
         }
 
 

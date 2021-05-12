@@ -25,6 +25,7 @@ namespace Quotes
 
         }
 
+        //dit is nodig om de repository te testen (de dbContext kan hiermee een Substitute zijn)
         public QuoteRepository(QuoteDbContext quoteDbContext)
         {
             this.dbContext = quoteDbContext;

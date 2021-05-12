@@ -19,11 +19,15 @@ namespace Quotes
         public MainWindow(IQuoteRepository quoteRepository)
         {
             InitializeComponent();
-            this.quoteRepository = quoteRepository;
-            LoadQuotes();
+            
+            // this.quoteRepository = quoteRepository;
+            // LoadQuotes();
+
+            //Stap 1 + zorg voor link listbox en textveldjes gaan zorgen met de datacontext
+            DataContext = new QuoteViewModel();
         }
 
-        private void saveButton_Click(object sender, RoutedEventArgs e)
+        /*private void saveButton_Click(object sender, RoutedEventArgs e)
         {
             if (authorTextBox.Text != String.Empty && quoteTextBox.Text != String.Empty)
             {
@@ -35,9 +39,9 @@ namespace Quotes
                 MessageBox.Show("error");
             }
             LoadQuotes();
-        }
+        }*/
 
-        private void LoadQuotes()
+        /*private void LoadQuotes()
         {
             quotesListBox.Items.Clear();
             List<Quote> quotes = quoteRepository.GetAllQuotes();
@@ -50,12 +54,12 @@ namespace Quotes
 
                 quotesListBox.Items.Add(listBoxItem);
             }
-        }
-        public ListBox QuotesListBox { get => quotesListBox; }
+        }*/
+       /* public ListBox QuotesListBox { get => quotesListBox; }
         public TextBox AuthorTextBox { get => authorTextBox; }
-        public TextBox QuoteTextBox { get => quoteTextBox; }
+        public TextBox QuoteTextBox { get => quoteTextBox; }*/
 
-        public void quotesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        /*public void quotesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (quotesListBox.SelectedIndex != -1)
             {
@@ -69,6 +73,6 @@ namespace Quotes
                 authorTextBox.Text ="";
                 quoteTextBox.Text = "";
             }
-        }
+        }*/
     }
 }

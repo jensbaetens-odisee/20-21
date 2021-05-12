@@ -12,7 +12,8 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <ListBox x:Name="quotesListBox" Margin="5" SelectionChanged="quotesListBox_SelectionChanged"/>
+        <!-- Add binding part, two way omdat na op save te duwen moet de data naar de listbox gaan-->
+        <ListBox x:Name="quotesListBox" Margin="5" ItemsSource="{Binding Quotes, Mode=TwoWay}" SelectionChanged="quotesListBox_SelectionChanged"/>
         <Grid Grid.Column="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
@@ -25,10 +26,12 @@
 
             </Grid.RowDefinitions>
             <Label Margin="5">Auteur:</Label>
-            <TextBox x:Name="authorTextBox" Grid.Column="1" Margin="5"/>
+            <!-- Add binding part, one way omdat er niets terug moet naar het viewmodel-->
+            <TextBox x:Name="authorTextBox" Grid.Column="1" Margin="5" Text="{Binding Author, Mode=OneWay}"/>
 
             <Label Grid.Row="1" Margin="5">Quote:</Label>
-            <TextBox x:Name="quoteTextBox" Grid.Column="1" Grid.Row="1" Margin="5"/>
+            <!-- Add binding part-->
+            <TextBox x:Name="quoteTextBox" Grid.Column="1" Grid.Row="1" Margin="5" Text="{Binding Text, Mode=OneWay}"/>
 
             <Button Grid.Row="2" Grid.ColumnSpan="2" Name="saveButton" Margin="5" Padding="5" Click="saveButton_Click">Save</Button>
         </Grid>
