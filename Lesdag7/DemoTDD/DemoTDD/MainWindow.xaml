@@ -1,0 +1,43 @@
+﻿<Window x:Class="DemoTDD.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DemoTDD"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <ListBox ItemsSource="{Binding Slots}">
+            <ListBox.ItemContainerStyle>
+                <Style  TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="IsHitTestVisible" Value="False"/>
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
+
+        <StackPanel Orientation="Vertical" Grid.Column="1">
+            <Label Foreground="Red" Margin="5"/>
+            <StackPanel Orientation="Horizontal">
+                <Label Margin="5">Budget:</Label>
+                <Label Margin="5" Content="{Binding Budget}"/>
+            </StackPanel>
+
+            <DockPanel>
+                <Button  DockPanel.Dock="Right" Margin="5">GO</Button>
+                <TextBox  DockPanel.Dock="Right" Margin="5"/>
+            </DockPanel>
+            <Button  Margin="5" Command="{Binding Add2EuroCommand}">€2</Button>
+            <Button Margin="5" Command="{Binding Add1EuroCommand}">€1</Button>
+            <Button Margin="5" Command="{Binding Add50CentCommand}">€0.5</Button>
+            <Button  Margin="5" Command="{Binding Add20CentCommand}">€0.2</Button>
+            <Button  Margin="5" Command="{Binding Add10CentCommand}">€0.1</Button>
+
+            <Button Margin="5" Command="{Binding RefundCommand}">REFUND</Button>
+        </StackPanel>
+    </Grid>
+</Window>
