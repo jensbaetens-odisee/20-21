@@ -16,6 +16,7 @@ namespace DemoTDD
         public ICommand Add20CentCommand { get; set; }
         public ICommand Add10CentCommand { get; set; }
         public ICommand RefundCommand { get; set; }
+        public ICommand BuyCommand { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -28,6 +29,8 @@ namespace DemoTDD
                 }
             }
         }
+        public string SelectedSlot { get; set; }
+        public string ErrorMessage { get; set; }
 
         public List<Slot> Slots { get; set; }
 
@@ -41,6 +44,7 @@ namespace DemoTDD
             Add20CentCommand = new RelayCommand(Add20Cent);
             Add10CentCommand = new RelayCommand(Add10Cent);
             RefundCommand = new RelayCommand(Refund);
+            BuyCommand = new RelayCommand(Buy);
 
             this.slotRepository = slotRepository;
             if (slotRepository != null) { 
@@ -50,6 +54,38 @@ namespace DemoTDD
             if (Slots == null) { 
                 Slots = new List<Slot>();
             }
+        }
+
+        public void Buy()
+        {
+            int selectedSlot;
+            if (!string.IsNullOrEmpty(SelectedSlot)) 
+            {
+                if (int.TryParse(SelectedSlot, out selectedSlot))
+                {
+                    if (Slots.Exists(slot => slot.SlotNumber == selectedSlot))
+                    {
+                        Slot slot = Slots.Find(s => s.SlotNumber == selectedSlot);
+
+                        if (Budget >= slot.Price)
+                        {
+                             slotRepository.RemoveOneItemFromSlot(selectedSlot);
+                            Slots = slotRepository.LoadData();
+                            SelectedSlot = "";
+                            Budget -= slot.Price;
+                            ErrorMessage = "";
+                            return;
+                        } else
+                        {
+                            ErrorMessage = "Insufficient funds";
+                            return;
+                        }
+                    }
+                }
+            } 
+
+            ErrorMessage = "Invalid slot";
+            
         }
 
         public void Refund()

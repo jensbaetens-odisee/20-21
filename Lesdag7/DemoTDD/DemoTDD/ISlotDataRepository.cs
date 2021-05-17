@@ -9,5 +9,6 @@ namespace DemoTDD
     public interface ISlotDataRepository
     {
         List<Slot> LoadData();
+        void RemoveOneItemFromSlot(int slotNumber);
     }
 }

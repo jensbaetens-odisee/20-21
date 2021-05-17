@@ -1,6 +1,7 @@
 using NSubstitute;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DemoTDD.Tests
 {
@@ -129,10 +130,151 @@ namespace DemoTDD.Tests
             Assert.That(viewModel.Slots, Is.EqualTo(slots));
         }
 
-        [Test]
-        public void BuyCommand_WithEnoughBudgetAndItemSelected_RemoveOneItemFromListAndReloadView()
+        [TestCase("1", 3, 0.5)]
+        [TestCase("1", 4, 1.5)]
+        [TestCase("2", 4, 2)]
+        [TestCase("3", 1, 0.5)]
+        public void BuyCommand_WithEnoughBudgetAndItemSelected_RemoveOneItemFromListAndReloadView(string slot, double startBudget, double endBudget)
         {
+            //Arrange
+            ISlotDataRepository repository = Substitute.For<ISlotDataRepository>();
+            List<Slot> beforeSlots = new List<Slot>()
+            {
+                new Slot("Cola", 2.5, 10, 1),
+                new Slot("Pepsi", 2.0, 8, 2),
+                new Slot("Water", 0.5, 8, 3)
+            };
+            repository.LoadData().Returns(beforeSlots);
+            viewModel = new ViewModel(repository);
 
+            //quantity of cola decreased by 1 (10 to 9)
+            //Note: when buying other slots than first slot with testcase
+            //this afterslots list will still be returned (hard to test with testcases, multiple tests necessary)
+            //with the testcases, we were interested in the changes to the budget so I leave it like this
+            List<Slot> afterSlots = new List<Slot>()
+            {
+                new Slot("Cola", 2.5, 9, 1),
+                new Slot("Pepsi", 2.0, 8, 2),
+                new Slot("Water", 0.5, 8, 3)
+            };
+            repository.LoadData().Returns(afterSlots);
+
+            viewModel.Budget = startBudget;
+            viewModel.SelectedSlot = slot;
+
+            //Act
+            viewModel.BuyCommand.Execute(null);
+
+            //Assert
+            repository.Received(1).RemoveOneItemFromSlot(Arg.Any<int>());
+            Assert.That(viewModel.Slots.ElementAt(0).Quantity, Is.EqualTo(9));
+            Assert.That(viewModel.Slots, Is.EqualTo(afterSlots));
+            Assert.That(viewModel.Budget, Is.EqualTo(endBudget));
+            Assert.IsEmpty(viewModel.SelectedSlot);
+            Assert.IsEmpty(viewModel.ErrorMessage);
+        }
+
+        [Test]
+        public void BuyCommand_WithNoItemSelected_PropperErrorMessageSetAndPurchaseNotExecuted()
+        {
+            //Arrange
+            ISlotDataRepository repository = Substitute.For<ISlotDataRepository>();
+            List<Slot> beforeSlots = new List<Slot>()
+            {
+                new Slot("Cola", 2.5, 10, 1),
+                new Slot("Pepsi", 2.0, 8, 2)
+            };
+            repository.LoadData().Returns(beforeSlots);
+            viewModel = new ViewModel(repository);
+
+            viewModel.Budget = 3;
+
+            //Act
+            viewModel.BuyCommand.Execute(null);
+
+            //Assert
+            repository.DidNotReceive().RemoveOneItemFromSlot(1);
+            Assert.That(viewModel.Slots, Is.EqualTo(beforeSlots));
+            Assert.That(viewModel.Budget, Is.EqualTo(3.0));
+            Assert.That(viewModel.ErrorMessage, Is.EqualTo("Invalid slot"));
+        }
+
+        [Test]
+        public void BuyCommand_WithSelectedSlotButNotANumber_PropperErrorMessageSetAndPurchaseNotExecuted()
+        {
+            //Arrange
+            ISlotDataRepository repository = Substitute.For<ISlotDataRepository>();
+            List<Slot> beforeSlots = new List<Slot>()
+            {
+                new Slot("Cola", 2.5, 10, 1),
+                new Slot("Pepsi", 2.0, 8, 2)
+            };
+            repository.LoadData().Returns(beforeSlots);
+            viewModel = new ViewModel(repository);
+
+            viewModel.Budget = 3;
+            viewModel.SelectedSlot = "vijf";
+
+            //Act
+            viewModel.BuyCommand.Execute(null);
+
+            //Assert
+            repository.DidNotReceive().RemoveOneItemFromSlot(1);
+            Assert.That(viewModel.Slots, Is.EqualTo(beforeSlots));
+            Assert.That(viewModel.Budget, Is.EqualTo(3.0));
+            Assert.That(viewModel.ErrorMessage, Is.EqualTo("Invalid slot"));
+        }
+
+        [Test]
+        public void BuyCommand_WithSelectedSlotButOutOfBounds_PropperErrorMessageSetAndPurchaseNotExecuted()
+        {
+            //Arrange
+            ISlotDataRepository repository = Substitute.For<ISlotDataRepository>();
+            List<Slot> beforeSlots = new List<Slot>()
+            {
+                new Slot("Cola", 2.5, 10, 1),
+                new Slot("Pepsi", 2.0, 8, 2)
+            };
+            repository.LoadData().Returns(beforeSlots);
+            viewModel = new ViewModel(repository);
+
+            viewModel.Budget = 3;
+            viewModel.SelectedSlot = "5";
+
+            //Act
+            viewModel.BuyCommand.Execute(null);
+
+            //Assert
+            repository.DidNotReceive().RemoveOneItemFromSlot(1);
+            Assert.That(viewModel.Slots, Is.EqualTo(beforeSlots));
+            Assert.That(viewModel.Budget, Is.EqualTo(3.0));
+            Assert.That(viewModel.ErrorMessage, Is.EqualTo("Invalid slot"));
+        }
+
+        [Test]
+        public void BuyCommand_WithNotEnoughBudget_PropperErrorMessageSetAndPurchaseNotExecuted()
+        {
+            //Arrange
+            ISlotDataRepository repository = Substitute.For<ISlotDataRepository>();
+            List<Slot> beforeSlots = new List<Slot>()
+            {
+                new Slot("Cola", 2.5, 10, 1),
+                new Slot("Pepsi", 2.0, 8, 2)
+            };
+            repository.LoadData().Returns(beforeSlots);
+            viewModel = new ViewModel(repository);
+
+            viewModel.Budget = 1;
+            viewModel.SelectedSlot = "1";
+
+            //Act
+            viewModel.BuyCommand.Execute(null);
+
+            //Assert
+            repository.DidNotReceive().RemoveOneItemFromSlot(1);
+            Assert.That(viewModel.Slots, Is.EqualTo(beforeSlots));
+            Assert.That(viewModel.Budget, Is.EqualTo(1.0));
+            Assert.That(viewModel.ErrorMessage, Is.EqualTo("Insufficient funds"));
         }
     }
 }
